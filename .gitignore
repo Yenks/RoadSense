@@ -1,0 +1,155 @@
+# ============================================================
+# Applies repo-wide (both projects)
+# ============================================================
+
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+.venv311/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Packaging / build
+build/
+dist/
+*.egg-info/
+.eggs/
+develop-eggs/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+wheels/
+share/python-wheels/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Test / coverage / cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+htmlcov/
+cover/
+
+# Logs
+*.log
+
+# Env files & secrets (never commit real credentials)
+.env
+.env.local
+.env.*.local
+secrets.yaml
+secrets.yml
+config/secrets.yml
+*.key
+*.pem
+*.crt
+*.csr
+*.pub
+*.priv
+*.p12
+credentials.json
+service-account.json
+*.cred
+*.credentials
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.spyderproject
+.spyproject
+.ropeproject
+
+# OS files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows binaries (source-controlled projects shouldn't ship these)
+*.dll
+*.exe
+*.pyd
+
+# Frontend (if either project ever adds JS tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+Dockerfile.dev
+
+# ============================================================
+# Road-User-Intelligence-System specific
+# ============================================================
+
+# Model / weights files (large, regenerable — keep out even though data/ is tracked)
+Road-User-Intelligence-System/**/*.pt
+Road-User-Intelligence-System/**/*.pth
+Road-User-Intelligence-System/**/*.onnx
+Road-User-Intelligence-System/**/*.tflite
+Road-User-Intelligence-System/**/*.pb
+Road-User-Intelligence-System/**/*.h5
+Road-User-Intelligence-System/**/*.keras
+Road-User-Intelligence-System/**/*.pkl
+Road-User-Intelligence-System/**/*.joblib
+Road-User-Intelligence-System/**/*.pickle
+Road-User-Intelligence-System/**/checkpoints/
+Road-User-Intelligence-System/**/*.ckpt
+Road-User-Intelligence-System/**/*.pth.tar
+Road-User-Intelligence-System/**/events.out.tfevents*
+Road-User-Intelligence-System/**/tensorboard/
+
+# Local sqlite DB (real data lives in Supabase, not this file)
+Road-User-Intelligence-System/*.db
+Road-User-Intelligence-System/*.sqlite
+Road-User-Intelligence-System/*.sqlite3
+
+# NOTE: data/ (raw_videos, processed, violations) is intentionally
+# tracked for safekeeping — do not add a blanket data/ exclusion here.
+
+# ============================================================
+# rszsis-desktop-app specific
+# ============================================================
+
+rszsis-desktop-app/*.db
+rszsis-desktop-app/*.sqlite
+rszsis-desktop-app/*.sqlite3

@@ -1,0 +1,252 @@
+[
+  {
+    "track_id": 23,
+    "label": "motor",
+    "frame_index": 59,
+    "timestamp_sec": 2.461,
+    "peak_speed_kmh": 50.6,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track23_motor_51kmh.jpg",
+    "violation_type": "failure_to_yield"
+  },
+  {
+    "track_id": 23,
+    "label": "motor",
+    "frame_index": 61,
+    "timestamp_sec": 2.544,
+    "peak_speed_kmh": 50.6,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track23_motor_50kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 49,
+    "label": "motor",
+    "frame_index": 66,
+    "timestamp_sec": 2.753,
+    "peak_speed_kmh": 58.8,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track49_motor_59kmh.jpg",
+    "violation_type": "failure_to_yield"
+  },
+  {
+    "track_id": 49,
+    "label": "motor",
+    "frame_index": 70,
+    "timestamp_sec": 2.92,
+    "peak_speed_kmh": 59.0,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track49_motor_59kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 91,
+    "label": "motor",
+    "frame_index": 123,
+    "timestamp_sec": 5.13,
+    "peak_speed_kmh": 58.4,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track91_motor_58kmh.jpg",
+    "violation_type": "failure_to_yield"
+  },
+  {
+    "track_id": 91,
+    "label": "motor",
+    "frame_index": 126,
+    "timestamp_sec": 5.255,
+    "peak_speed_kmh": 59.3,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track91_motor_59kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 89,
+    "label": "motor",
+    "frame_index": 140,
+    "timestamp_sec": 5.839,
+    "peak_speed_kmh": 50.4,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track89_motor_50kmh.jpg",
+    "violation_type": "failure_to_yield"
+  },
+  {
+    "track_id": 89,
+    "label": "motor",
+    "frame_index": 143,
+    "timestamp_sec": 5.964,
+    "peak_speed_kmh": 51.0,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track89_motor_51kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 153,
+    "label": "awning-tricycle",
+    "frame_index": 235,
+    "timestamp_sec": 9.801,
+    "peak_speed_kmh": 67.5,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track153_awning-tricycle_67kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 177,
+    "label": "tricycle",
+    "frame_index": 305,
+    "timestamp_sec": 12.721,
+    "peak_speed_kmh": 46.6,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track177_tricycle_47kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 196,
+    "label": "tricycle",
+    "frame_index": 367,
+    "timestamp_sec": 15.307,
+    "peak_speed_kmh": 30.7,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track196_tricycle_31kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 206,
+    "label": "awning-tricycle",
+    "frame_index": 378,
+    "timestamp_sec": 15.766,
+    "peak_speed_kmh": 47.1,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track206_awning-tricycle_47kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 273,
+    "label": "motor",
+    "frame_index": 452,
+    "timestamp_sec": 18.852,
+    "peak_speed_kmh": 45.7,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track273_motor_46kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 300,
+    "label": "motor",
+    "frame_index": 520,
+    "timestamp_sec": 21.688,
+    "peak_speed_kmh": 58.5,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track300_motor_57kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 326,
+    "label": "motor",
+    "frame_index": 529,
+    "timestamp_sec": 22.064,
+    "peak_speed_kmh": 62.9,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track326_motor_63kmh.jpg",
+    "violation_type": "failure_to_yield"
+  },
+  {
+    "track_id": 326,
+    "label": "motor",
+    "frame_index": 533,
+    "timestamp_sec": 22.231,
+    "peak_speed_kmh": 62.9,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track326_motor_62kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 261,
+    "label": "motor",
+    "frame_index": 533,
+    "timestamp_sec": 22.231,
+    "peak_speed_kmh": 21.4,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track261_motor_21kmh.jpg",
+    "violation_type": "failure_to_yield"
+  },
+  {
+    "track_id": 341,
+    "label": "truck",
+    "frame_index": 597,
+    "timestamp_sec": 24.9,
+    "peak_speed_kmh": 58.8,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track341_truck_59kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 349,
+    "label": "car",
+    "frame_index": 610,
+    "timestamp_sec": 25.442,
+    "peak_speed_kmh": 49.3,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track349_car_49kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 380,
+    "label": "motor",
+    "frame_index": 666,
+    "timestamp_sec": 27.778,
+    "peak_speed_kmh": 52.9,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track380_motor_53kmh.jpg",
+    "violation_type": "failure_to_yield"
+  },
+  {
+    "track_id": 380,
+    "label": "motor",
+    "frame_index": 669,
+    "timestamp_sec": 27.903,
+    "peak_speed_kmh": 53.2,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track380_motor_53kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 393,
+    "label": "motor",
+    "frame_index": 677,
+    "timestamp_sec": 28.237,
+    "peak_speed_kmh": 64.0,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track393_motor_64kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 440,
+    "label": "motor",
+    "frame_index": 749,
+    "timestamp_sec": 31.24,
+    "peak_speed_kmh": 56.3,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track440_motor_56kmh.jpg",
+    "violation_type": "failure_to_yield"
+  },
+  {
+    "track_id": 440,
+    "label": "motor",
+    "frame_index": 752,
+    "timestamp_sec": 31.365,
+    "peak_speed_kmh": 56.4,
+    "speed_limit_kmh": 30.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track440_motor_55kmh.jpg",
+    "violation_type": "speeding"
+  },
+  {
+    "track_id": 436,
+    "label": "motor",
+    "frame_index": 769,
+    "timestamp_sec": 32.074,
+    "peak_speed_kmh": 42.2,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\Road-User-Intelligence-System\\data\\violations\\DJI_0567_720p\\violation_track436_motor_42kmh.jpg",
+    "violation_type": "failure_to_yield"
+  }
+]
