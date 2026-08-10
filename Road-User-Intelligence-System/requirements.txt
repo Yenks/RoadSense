@@ -1,0 +1,57 @@
+# ============================================================
+# School Zone Safety System - full project requirements
+# Install once, covers Weeks 3-11.
+#   pip install -r requirements.txt
+# ============================================================
+
+# --- Week 3: Object Detection (YOLOv8) ---
+ultralytics>=8.2.0          # YOLOv8 models + inference
+opencv-python-headless>=4.9.0
+numpy>=1.26.0
+Pillow>=10.2.0
+
+# --- Week 4: Object Tracking (ByteTrack) ---
+supervision>=0.23.0         # ByteTrack implementation + tracking utils
+lap>=0.4.0                  # linear assignment, required by ByteTrack
+scipy>=1.12.0
+
+# --- Week 5: Speed Estimation ---
+# (uses numpy/opencv above for calibration + homography math)
+
+# --- Week 6: Violation Detection ---
+# (pure Python logic on top of detection/tracking/speed - no new deps)
+
+# --- Week 7: Pedestrian Zone / Conflict Detection ---
+shapely>=2.0.0               # polygon/zone geometry for crossing checks
+
+# --- Week 8: Backend + Database ---
+Flask>=3.0.0
+Flask-SQLAlchemy>=3.1.0
+SQLAlchemy>=2.0.0
+psycopg2-binary>=2.9.0
+python-dotenv>=1.0.0
+
+# --- Week 9: Dashboard Frontend ---
+# Chart.js is loaded via CDN in dashboard/templates/index.html - no pip package needed
+
+# --- Week 10: Testing & Evaluation ---
+pytest>=8.0.0
+pytest-cov>=5.0.0
+tqdm
+huggingface_hub
+flask-login
+werkzeug
+ultralytics
+opencv-python
+numpy
+flask
+flask-cors
+sqlalchemy
+supervision
+tqdm
+huggingface_hub
+werkzeug
+flask-login
+
+# --- Week 11: Documentation & Demo ---
+# (no additional runtime deps)

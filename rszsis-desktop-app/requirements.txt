@@ -1,0 +1,21 @@
+﻿# RSZSIS Desktop — single venv dependencies
+# Includes GUI deps plus the sibling pipeline packages imported at runtime.
+
+# --- Desktop app ---
+PyQt6>=6.7.0
+opencv-python>=4.9.0
+python-dotenv>=1.0.0
+supabase>=2.0.0
+SQLAlchemy>=2.0.0
+numpy>=1.26.0
+Pillow>=10.2.0
+tqdm>=4.66.0
+
+# --- Pipeline (school-zone-safety-system via sys.path) ---
+ultralytics>=8.2.0
+huggingface_hub>=0.20.0
+supervision>=0.23.0
+lap>=0.4.0
+scipy>=1.12.0
+shapely>=2.0.0
+werkzeug>=3.0.0

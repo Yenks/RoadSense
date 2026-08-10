@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>{% block title %}CivicShield{% endblock %}</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      "asphalt": "#21252B", "cloud": "#F7F8FA", "marking-yellow": "#F4B400",
+      "alert-red": "#D8453C", "clear-green": "#2E8B57", "outline": "#75777b",
+      "outline-variant": "#c5c6cb", "secondary": "#7a5900", "on-surface-variant": "#45474b",
+      "error-container": "#ffdad6", "surface-container-lowest": "#ffffff"
+    },
+    borderRadius: { DEFAULT: "10px", lg: "10px", xl: "12px", full: "9999px" },
+    fontFamily: {
+      "label-caps": ["IBM Plex Sans","sans-serif"], "body-md": ["IBM Plex Sans","sans-serif"],
+      "body-sm": ["IBM Plex Sans","sans-serif"], "headline-md": ["Space Grotesk","sans-serif"],
+      "headline-xl": ["Space Grotesk","sans-serif"], "data-mono": ["JetBrains Mono","monospace"]
+    },
+    fontSize: {
+      "label-caps": ["12px",{lineHeight:"1",letterSpacing:"0.05em",fontWeight:"600"}],
+      "body-md": ["16px",{lineHeight:"1.5"}], "body-sm": ["14px",{lineHeight:"1.5"}],
+      "headline-xl": ["40px",{lineHeight:"1.2",fontWeight:"600"}],
+      "headline-md": ["24px",{lineHeight:"1.3",fontWeight:"500"}],
+      "data-mono": ["14px",{lineHeight:"1.4",letterSpacing:"-0.01em",fontWeight:"500"}]
+    }
+  }}
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; }
+  .custom-shadow { box-shadow: 0 1px 3px rgba(20,23,26,0.08); }
+  body { background-color: #F7F8FA; }
+</style>
+</head>
+<body class="font-body-md text-[#1c1b1c]">
+<div class="flex min-h-screen">
+  <aside class="fixed left-0 top-0 h-full w-64 bg-asphalt text-white flex flex-col p-6 z-50">
+    <div class="mb-10">
+      <h1 class="font-headline-md text-headline-md tracking-tight">CivicShield</h1>
+      <p class="font-label-caps text-label-caps opacity-60 mt-1">Safety Monitor</p>
+    </div>
+    <nav class="flex-1 space-y-2">
+      <a href="{{ url_for('dashboard_home') }}"
+         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ 'bg-secondary text-white' if request.endpoint == 'dashboard_home' else 'text-white/70 hover:bg-white/5' }}">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="font-label-caps text-label-caps">Dashboard</span>
+      </a>
+      <a href="{{ url_for('violations_page') }}"
+         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ 'bg-secondary text-white' if request.endpoint == 'violations_page' else 'text-white/70 hover:bg-white/5' }}">
+        <span class="material-symbols-outlined">report_problem</span>
+        <span class="font-label-caps text-label-caps">Violations</span>
+      </a>
+      <a href="{{ url_for('videos_page') }}"
+         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ 'bg-secondary text-white' if request.endpoint in ['videos_page','video_detail'] else 'text-white/70 hover:bg-white/5' }}">
+        <span class="material-symbols-outlined">videocam</span>
+        <span class="font-label-caps text-label-caps">Videos</span>
+      </a>
+    </nav>
+    <div class="mt-auto pt-6 border-t border-white/10">
+      <a href="{{ url_for('logout') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-white/5 transition-all">
+        <span class="material-symbols-outlined">logout</span>
+       <span class="font-label-caps text-label-caps">Log out ({{ current_user.email }})</span>
+      </a>
+    </div>
+  </aside>
+  <main class="ml-64 flex-1 bg-cloud p-8 min-h-screen">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}<div class="mb-6 text-alert-red font-body-sm">{% for m in messages %}{{ m }}{% endfor %}</div>{% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <footer class="w-full py-12 flex flex-col md:flex-row justify-between items-center mt-12 opacity-70">
+      <p class="font-body-sm text-body-sm">© 2026 CivicShield — Academic Project, RUIS</p>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

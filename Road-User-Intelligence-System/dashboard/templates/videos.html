@@ -1,0 +1,47 @@
+{% extends "base_app.html" %}
+{% block title %}Videos — CivicShield{% endblock %}
+{% block content %}
+<header class="mb-10"><h2 class="font-headline-md text-2xl text-asphalt">Processed Videos</h2></header>
+<section class="bg-white rounded-lg custom-shadow overflow-hidden">
+  {% if sessions %}
+  <table class="w-full text-left">
+    <thead class="bg-cloud">
+      <tr>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Video</th>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Duration</th>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Vehicles</th>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Avg Speed</th>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Peak Speed</th>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Status</th>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Processed</th>
+        <th class="px-6 py-4 text-right"></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      {% for s in sessions %}
+      <tr class="hover:bg-cloud/50">
+        <td class="px-6 py-4 font-data-mono text-sm text-asphalt">{{ s.video_name }}</td>
+        <td class="px-6 py-4 font-data-mono text-sm">{{ "%.1f"|format(s.duration_sec) }}s</td>
+        <td class="px-6 py-4 font-data-mono text-sm">{{ s.total_vehicles }}</td>
+        <td class="px-6 py-4 font-data-mono text-sm">{{ s.avg_speed_kmh or "—" }} km/h</td>
+        <td class="px-6 py-4 font-data-mono text-sm">{{ s.peak_speed_kmh or "—" }} km/h</td>
+        <td class="px-6 py-4">
+          {% if s.total_violations == 0 %}
+          <span class="inline-flex items-center rounded-full bg-clear-green/10 px-3 py-1 text-xs font-bold text-clear-green">Compliant</span>
+          {% else %}
+          <span class="inline-flex items-center rounded-full bg-alert-red/10 px-3 py-1 text-xs font-bold text-alert-red">{{ s.total_violations }} Violation(s)</span>
+          {% endif %}
+        </td>
+        <td class="px-6 py-4 text-sm text-on-surface-variant">{{ s.processed_at.strftime('%Y-%m-%d %H:%M') if s.processed_at else "—" }}</td>
+        <td class="px-6 py-4 text-right">
+          <a href="{{ url_for('video_detail', video_name=s.video_name) }}" class="bg-asphalt text-white px-4 py-2 rounded-lg text-xs font-bold">Review</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="p-10 text-center text-on-surface-variant">No videos processed yet.</div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,329 @@
+# ============================================================
+# Python - General
+# ============================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.env
+.venv
+ENV/
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# ============================================================
+# Machine Learning / Data Science
+# ============================================================
+
+# Model files (large files)
+*.pt
+*.pth
+*.onnx
+*.tflite
+*.pb
+*.h5
+*.keras
+*.pkl
+*.joblib
+*.pickle
+
+# Dataset files (large files)
+*.npz
+*.npy
+*.hdf5
+*.h5
+*.parquet
+*.arrow
+
+# Training checkpoints
+checkpoints/
+*.ckpt
+*.pth.tar
+
+# TensorFlow
+*.pb
+*.meta
+*.index
+*.data-*
+model.ckpt*
+events.out.tfevents*
+*.tfevent
+tensorboard/
+
+# ============================================================
+# Project Specific
+# ============================================================
+
+# Data files (your video/images datasets)
+data/
+!data/.gitkeep  # Keep the directory but ignore contents
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.flv
+*.wmv
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.tif
+
+# Output files
+outputs/
+!outputs/.gitkeep
+*.mp4
+*.avi
+*.log
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+instance/
+!instance/.gitkeep
+
+# Log files
+logs/
+*.log
+!logs/.gitkeep
+
+# Uploads
+uploads/
+!uploads/.gitkeep
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+
+# ============================================================
+# OS Specific
+# ============================================================
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+*.dll
+*.exe
+*.pyd
+
+# Linux
+*.o
+*.so
+
+# ============================================================
+# Security & Secrets
+# ============================================================
+
+# Secret keys
+.env
+.env.local
+.env.*.local
+secrets.yaml
+secrets.yml
+config/secrets.yml
+
+# API keys
+*.key
+*.pem
+*.crt
+*.csr
+*.pub
+*.priv
+*.p12
+
+# Credentials
+credentials.json
+service-account.json
+*.cred
+*.credentials
+
+# ============================================================
+# Docker
+# ============================================================
+
+docker-compose.override.yml
+.dockerignore
+Dockerfile.dev
+
+# ============================================================
+# Frontend / Web
+# ============================================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ============================================================
+# Custom Rules for School Zone Project
+# ============================================================
+
+# Keep example files but ignore actual data
+!data/example_video.mp4
+!data/sample_frame.jpg
+
+# Keep model directory structure but ignore models
+!models/.gitkeep
+
+# Keep output directory structure but ignore outputs
+!outputs/.gitkeep

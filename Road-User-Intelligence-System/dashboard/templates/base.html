@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}CivicShield{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+    {% if current_user.is_authenticated %}
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-name">CIVICSHIELD</div>
+            <div class="brand-sub">Infrastructure Monitor</div>
+        </div>
+        <nav>
+            <a href="{{ url_for('dashboard_home') }}" class="{{ 'active' if request.endpoint == 'dashboard_home' }}">Dashboard</a>
+            <a href="{{ url_for('violations_page') }}" class="{{ 'active' if request.endpoint == 'violations_page' }}">Violations</a>
+            <a href="{{ url_for('videos_page') }}" class="{{ 'active' if request.endpoint in ['videos_page', 'video_detail'] }}">Videos</a>
+        </nav>
+        <a href="{{ url_for('logout') }}" class="logout">Log out ({{ current_user.username }})</a>
+    </aside>
+    {% endif %}
+    <main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flashes">{% for m in messages %}{{ m }}{% endfor %}</div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

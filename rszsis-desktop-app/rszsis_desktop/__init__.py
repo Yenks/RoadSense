@@ -1,0 +1,1 @@
+﻿"""RSZSIS Desktop application package."""

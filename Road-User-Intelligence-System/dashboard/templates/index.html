@@ -1,0 +1,97 @@
+{% extends "base_app.html" %}
+{% block title %}Dashboard — CivicShield{% endblock %}
+{% block content %}
+<header class="mb-10">
+  <h2 class="font-headline-md text-2xl text-asphalt">System Overview</h2>
+</header>
+
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+  <div class="bg-white p-6 rounded-lg custom-shadow">
+    <span class="text-on-surface-variant text-xs font-bold uppercase tracking-wide">Total Vehicles</span>
+    <div class="font-data-mono text-4xl text-asphalt mt-2">{{ total_vehicles }}</div>
+    <p class="text-xs text-on-surface-variant mt-2">Across {{ sessions|length }} processed video(s)</p>
+  </div>
+  <div class="bg-white p-6 rounded-lg custom-shadow border-l-4 {{ 'border-alert-red' if total_violations > 0 else 'border-clear-green' }}">
+    <span class="text-on-surface-variant text-xs font-bold uppercase tracking-wide">Total Violations</span>
+    <div class="font-data-mono text-4xl {{ 'text-alert-red' if total_violations > 0 else 'text-clear-green' }} mt-2">{{ total_violations }}</div>
+    <p class="text-xs mt-2 {{ 'text-alert-red' if total_violations > 0 else 'text-clear-green' }}">
+      {{ "Review required" if total_violations > 0 else "No violations recorded" }}
+    </p>
+  </div>
+  <div class="bg-white p-6 rounded-lg custom-shadow">
+    <span class="text-on-surface-variant text-xs font-bold uppercase tracking-wide">Videos Processed</span>
+    <div class="font-data-mono text-4xl text-asphalt mt-2">{{ sessions|length }}</div>
+    <p class="text-xs text-on-surface-variant mt-2">
+      {% if latest_processed %}Last: {{ latest_processed.strftime('%Y-%m-%d %H:%M') }}{% else %}—{% endif %}
+    </p>
+  </div>
+</section>
+
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+  <div class="bg-white p-8 rounded-lg custom-shadow">
+    <h3 class="font-headline-md text-lg text-asphalt mb-6">Violations by Type</h3>
+    <canvas id="violationTypeChart"></canvas>
+  </div>
+  <div class="bg-white p-8 rounded-lg custom-shadow">
+    <h3 class="font-headline-md text-lg text-asphalt mb-6">Violations by Video</h3>
+    <canvas id="violationsByVideoChart"></canvas>
+  </div>
+</section>
+
+<section class="bg-white rounded-lg custom-shadow overflow-hidden">
+  <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+    <h3 class="font-headline-md text-lg text-asphalt">Processed Videos</h3>
+    <a href="{{ url_for('videos_page') }}" class="text-sm font-bold text-asphalt flex items-center gap-1">View All <span class="material-symbols-outlined text-[18px]">chevron_right</span></a>
+  </div>
+  {% if sessions %}
+  <table class="w-full text-left">
+    <thead class="bg-cloud">
+      <tr>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Video</th>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Vehicles</th>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Avg Speed</th>
+        <th class="px-6 py-4 text-xs font-bold uppercase text-on-surface-variant">Status</th>
+        <th class="px-6 py-4 text-right"></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      {% for s in sessions %}
+      <tr class="hover:bg-cloud/50">
+        <td class="px-6 py-4 font-data-mono text-sm text-asphalt">{{ s.video_name }}</td>
+        <td class="px-6 py-4 font-data-mono text-sm">{{ s.total_vehicles }}</td>
+        <td class="px-6 py-4 font-data-mono text-sm">{{ s.avg_speed_kmh or "—" }} km/h</td>
+        <td class="px-6 py-4">
+          {% if s.total_violations == 0 %}
+          <span class="inline-flex items-center rounded-full bg-clear-green/10 px-3 py-1 text-xs font-bold text-clear-green">Compliant</span>
+          {% else %}
+          <span class="inline-flex items-center rounded-full bg-alert-red/10 px-3 py-1 text-xs font-bold text-alert-red">{{ s.total_violations }} Violation(s)</span>
+          {% endif %}
+        </td>
+        <td class="px-6 py-4 text-right">
+          <a href="{{ url_for('video_detail', video_name=s.video_name) }}" class="text-asphalt"><span class="material-symbols-outlined">play_circle</span></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="p-10 text-center text-on-surface-variant">No videos processed yet.</div>
+  {% endif %}
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+new Chart(document.getElementById('violationTypeChart'), {
+  type: 'bar',
+  data: { labels: {{ violation_type_counts.keys()|list|tojson }},
+    datasets: [{ data: {{ violation_type_counts.values()|list|tojson }}, backgroundColor: ['#D8453C', '#F4B400'] }] },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+});
+new Chart(document.getElementById('violationsByVideoChart'), {
+  type: 'bar',
+  data: { labels: {{ violations_by_video.keys()|list|tojson }},
+    datasets: [{ data: {{ violations_by_video.values()|list|tojson }}, backgroundColor: '#21252B' }] },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+});
+</script>
+{% endblock %}

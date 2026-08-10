@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}{{ video_name }} — CivicShield{% endblock %}
+{% block content %}
+<div class="topbar">
+    <h1>Analysis Report: {{ video_name }}</h1>
+</div>
+<div class="hazard-stripe"></div>
+
+<div class="video-detail-grid">
+    <div class="card">
+        <div class="label">Session Summary</div>
+        {% if summary %}
+        <p style="font-family:'IBM Plex Mono',monospace; color:var(--slate); font-size:14px;">
+            Processed {{ summary.processed_at.strftime('%Y-%m-%d %H:%M') if summary.processed_at else "—" }}
+        </p>
+        {% endif %}
+    </div>
+    <div class="card metadata-card">
+        <div class="label">Session Metadata</div>
+        <dl>
+            <dt>Duration</dt><dd>{{ "%.1f"|format(summary.duration_sec) if summary else "—" }}s</dd>
+            <dt>Vehicles Tracked</dt><dd>{{ summary.total_vehicles if summary else "—" }}</dd>
+            <dt>Violations</dt><dd>{{ summary.total_violations if summary else "—" }}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="stat-cards">
+    <div class="card">
+        <div class="label">Avg Speed</div>
+        <div class="value">{{ summary.avg_speed_kmh or "—" if summary else "—" }} <span style="font-size:16px;">km/h</span></div>
+    </div>
+    <div class="card danger">
+        <div class="label">Peak Speed</div>
+        <div class="value">{{ summary.peak_speed_kmh or "—" if summary else "—" }} <span style="font-size:16px;">km/h</span></div>
+    </div>
+    <div class="card safe">
+        <div class="label">Compliance Rate</div>
+        <div class="value">{{ compliance_rate }}%</div>
+        <div class="compliance-bar"><div class="compliance-bar-fill" style="width:{{ compliance_rate }}%"></div></div>
+    </div>
+</div>
+
+<h2 style="margin-top:32px;">Tracked Vehicles</h2>
+<div class="hazard-stripe"></div>
+{% if vehicles %}
+<table>
+    <thead>
+    <tr><th>Track ID</th><th>Class</th><th>Entry (s)</th><th>Exit (s)</th><th>Max Speed</th><th>Avg Speed</th></tr>
+    </thead>
+    <tbody>
+    {% for v in vehicles %}
+    <tr>
+        <td>#{{ v.track_id }}</td>
+        <td class="label-col">{{ v.vehicle_class }}{% if v.is_rider %} (rider){% endif %}</td>
+        <td>{{ "%.1f"|format(v.entry_time_sec) }}</td>
+        <td>{{ "%.1f"|format(v.exit_time_sec) }}</td>
+        <td>{{ v.max_speed_kmh or "—" }} km/h</td>
+        <td>{{ v.avg_speed_kmh or "—" }} km/h</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">No vehicles recorded for this video.</div>
+{% endif %}
+
+<h2 style="margin-top:32px;">Violations</h2>
+<div class="hazard-stripe red"></div>
+{% if violations %}
+<table>
+    <thead>
+    <tr><th>Track ID</th><th>Class</th><th>Type</th><th>Speed</th><th>Threshold</th><th>Time (s)</th></tr>
+    </thead>
+    <tbody>
+    {% for v in violations %}
+    <tr>
+        <td>#{{ v.track_id }}</td>
+        <td class="label-col">{{ v.vehicle_class }}</td>
+        <td>
+            {% if v.violation_type == 'speeding' %}
+                <span class="tag violation-speeding">Speeding</span>
+            {% else %}
+                <span class="tag violation-failure_to_yield">Failed to Yield</span>
+            {% endif %}
+        </td>
+        <td>{{ v.speed_kmh }} km/h</td>
+        <td>{{ v.threshold_kmh }} km/h</td>
+        <td>{{ "%.1f"|format(v.timestamp_sec) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">No violations recorded for this video.</div>
+{% endif %}
+{% endblock %}
