@@ -85,6 +85,22 @@ jobs:
           python -m pip install -r rszsis-desktop-app/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
           python -m pip install pyinstaller
 
+      - name: Ensure model weights file exists for bundle
+        run: |
+          python -c "
+          import shutil
+          from pathlib import Path
+          from huggingface_hub import hf_hub_download
+
+          target = Path('Road-User-Intelligence-System/data/models/yolov8m_visdrone.pt')
+          target.parent.mkdir(parents=True, exist_ok=True)
+          if not target.exists():
+              print('Downloading model weights from Hugging Face...')
+              downloaded = hf_hub_download(repo_id='mshamrai/yolov8m-visdrone', filename='best.pt')
+              shutil.copy(downloaded, target)
+              print('Model weights saved to', target)
+          "
+
       - name: Build executable with PyInstaller
         run: |
           pyinstaller --noconfirm rszsis-desktop-app/rszsis-desktop.spec
