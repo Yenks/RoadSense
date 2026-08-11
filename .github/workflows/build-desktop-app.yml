@@ -16,15 +16,15 @@ jobs:
         platform:
           - name: windows-x64
             os: windows-latest
-            artifact_name: rszsis-desktop-windows-x64
+            artifact_name: RoadSense-Desktop-Windows
             archive_ext: zip
           - name: macos-arm64
             os: macos-latest
-            artifact_name: rszsis-desktop-macos-arm64
+            artifact_name: RoadSense-Desktop-macOS
             archive_ext: zip
           - name: linux-x64
             os: ubuntu-latest
-            artifact_name: rszsis-desktop-linux-x64
+            artifact_name: RoadSense-Desktop-Linux
             archive_ext: tar.gz
 
     steps:
@@ -133,3 +133,24 @@ jobs:
         with:
           name: ${{ matrix.platform.artifact_name }}
           path: ${{ matrix.platform.artifact_name }}.${{ matrix.platform.archive_ext }}
+
+  publish-release:
+    name: Publish GitHub Release
+    needs: build-executable
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Publish Release to GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          name: RoadSense Desktop App v1.0.0
+          body: Initial multi-platform standalone desktop application release for the Road-User Safety Intelligence System (RSZSIS).
+          files: |
+            RoadSense-Desktop-Windows/RoadSense-Desktop-Windows.zip
+            RoadSense-Desktop-macOS/RoadSense-Desktop-macOS.zip
+            RoadSense-Desktop-Linux/RoadSense-Desktop-Linux.tar.gz
