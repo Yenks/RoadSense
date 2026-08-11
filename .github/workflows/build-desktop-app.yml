@@ -114,23 +114,19 @@ jobs:
               (dist / folder).mkdir(parents=True, exist_ok=True)
           "
 
-      - name: Archive build output (Windows)
-        if: runner.os == 'Windows'
-        shell: powershell
+      - name: Archive build output
         run: |
-          Compress-Archive -Path rszsis-desktop-app/dist/rszsis-desktop/* -DestinationPath ${{ matrix.platform.artifact_name }}.zip
+          python -c "
+          import shutil, os
+          from pathlib import Path
 
-      - name: Archive build output (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          cd rszsis-desktop-app/dist/rszsis-desktop
-          zip -r ../../../${{ matrix.platform.artifact_name }}.zip .
-
-      - name: Archive build output (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          cd rszsis-desktop-app/dist/rszsis-desktop
-          tar -czvf ../../../${{ matrix.platform.artifact_name }}.tar.gz .
+          src = Path('rszsis-desktop-app/dist/rszsis-desktop')
+          fmt = 'gztar' if '${{ matrix.platform.archive_ext }}' == 'tar.gz' else 'zip'
+          out_base = '${{ matrix.platform.artifact_name }}'
+          
+          archive = shutil.make_archive(out_base, fmt, str(src))
+          print(f'Created archive: {archive} ({os.path.getsize(archive)} bytes)')
+          "
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
