@@ -143,8 +143,9 @@ Road-User-Intelligence-System/*.db
 Road-User-Intelligence-System/*.sqlite
 Road-User-Intelligence-System/*.sqlite3
 
-# NOTE: data/ (raw_videos, processed, violations) is intentionally
-# tracked for safekeeping — do not add a blanket data/ exclusion here.
+# Exclude heavy video files from repository tracking
+Road-User-Intelligence-System/data/raw_videos/
+Road-User-Intelligence-System/data/processed/*.mp4
 
 # ============================================================
 # rszsis-desktop-app specific
