@@ -108,15 +108,13 @@ jobs:
       - name: Ensure empty runtime output directories exist in build dist
         run: |
           python -c "
-          import os
+          import os, sys
           from pathlib import Path
           dist = Path('dist/rszsis-desktop/Road-User-Intelligence-System/data')
-          if not dist.parent.exists():
-              print(f'CRITICAL ERROR: PyInstaller output directory {dist.parent} does not exist!')
-              sys.exit(1)
           for folder in ['raw_videos', 'processed', 'violations', 'calibration_frames']:
-              (dist / folder).mkdir(parents=True, exist_ok=True)
-              print(f'Ensured subfolder: {dist / folder}')
+              p = dist / folder
+              p.mkdir(parents=True, exist_ok=True)
+              print(f'Ensured directory: {p}')
           "
 
       - name: Archive build output
@@ -156,7 +154,7 @@ jobs:
 
           MIN_SIZE_MB = 100.0
           if size_mb < MIN_SIZE_MB:
-              print(f'CRITICAL ERROR: Archive size {size_mb:.2f} MB is below required minimum threshold ({MIN_SIZE_MB} MB)!')
+              print(f'CRITICAL ERROR: Archive size {size_mb:.2f} MB is below required threshold ({MIN_SIZE_MB} MB)!')
               sys.exit(1)
 
           print(f'SUCCESS: Archive size verification passed ({size_mb:.2f} MB >= {MIN_SIZE_MB} MB).')
