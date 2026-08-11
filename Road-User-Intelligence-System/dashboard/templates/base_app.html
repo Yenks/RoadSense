@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>{% block title %}CivicShield{% endblock %}</title>
+<title>{% block title %}CivicShield — Safety Monitor{% endblock %}</title>
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="description" content="CivicShield authenticated safety intelligence dashboard."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23F4B400'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V5l-9-4z'/></svg>"/>
+
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -36,46 +40,72 @@ tailwind.config = {
   .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; }
   .custom-shadow { box-shadow: 0 1px 3px rgba(20,23,26,0.08); }
   body { background-color: #F7F8FA; }
+  .sr-only-focusable:focus { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; }
 </style>
 </head>
-<body class="font-body-md text-[#1c1b1c]">
-<div class="flex min-h-screen">
-  <aside class="fixed left-0 top-0 h-full w-64 bg-asphalt text-white flex flex-col p-6 z-50">
-    <div class="mb-10">
-      <h1 class="font-headline-md text-headline-md tracking-tight">CivicShield</h1>
-      <p class="font-label-caps text-label-caps opacity-60 mt-1">Safety Monitor</p>
+<body class="font-body-md text-[#1c1b1c] antialiased">
+
+<a href="#main-content" class="sr-only sr-only-focusable fixed top-2 left-2 z-50 bg-asphalt text-white px-4 py-2 rounded-lg font-bold">Skip to content</a>
+
+<div class="flex flex-col md:flex-row min-h-screen">
+  <!-- Sidebar -->
+  <aside class="w-full md:w-64 bg-asphalt text-white flex flex-col p-6 z-40 md:fixed md:left-0 md:top-0 md:h-full shrink-0">
+    <div class="mb-6 md:mb-10 flex items-center justify-between md:block">
+      <div>
+        <h1 class="font-headline-md text-headline-md tracking-tight">CivicShield</h1>
+        <p class="font-label-caps text-label-caps opacity-60 mt-1">Safety Monitor</p>
+      </div>
     </div>
-    <nav class="flex-1 space-y-2">
+    
+    <nav class="flex flex-row md:flex-col gap-2 overflow-x-auto pb-2 md:pb-0 flex-1" aria-label="Main Navigation">
       <a href="{{ url_for('dashboard_home') }}"
-         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ 'bg-secondary text-white' if request.endpoint == 'dashboard_home' else 'text-white/70 hover:bg-white/5' }}">
+         aria-current="{{ 'page' if request.endpoint == 'dashboard_home' }}"
+         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all whitespace-nowrap {{ 'bg-secondary text-white font-semibold' if request.endpoint == 'dashboard_home' else 'text-white/70 hover:bg-white/5' }}">
         <span class="material-symbols-outlined">dashboard</span>
         <span class="font-label-caps text-label-caps">Dashboard</span>
       </a>
       <a href="{{ url_for('violations_page') }}"
-         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ 'bg-secondary text-white' if request.endpoint == 'violations_page' else 'text-white/70 hover:bg-white/5' }}">
+         aria-current="{{ 'page' if request.endpoint == 'violations_page' }}"
+         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all whitespace-nowrap {{ 'bg-secondary text-white font-semibold' if request.endpoint == 'violations_page' else 'text-white/70 hover:bg-white/5' }}">
         <span class="material-symbols-outlined">report_problem</span>
         <span class="font-label-caps text-label-caps">Violations</span>
       </a>
       <a href="{{ url_for('videos_page') }}"
-         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ 'bg-secondary text-white' if request.endpoint in ['videos_page','video_detail'] else 'text-white/70 hover:bg-white/5' }}">
+         aria-current="{{ 'page' if request.endpoint in ['videos_page','video_detail'] }}"
+         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all whitespace-nowrap {{ 'bg-secondary text-white font-semibold' if request.endpoint in ['videos_page','video_detail'] else 'text-white/70 hover:bg-white/5' }}">
         <span class="material-symbols-outlined">videocam</span>
         <span class="font-label-caps text-label-caps">Videos</span>
       </a>
     </nav>
-    <div class="mt-auto pt-6 border-t border-white/10">
-      <a href="{{ url_for('logout') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-white/5 transition-all">
+
+    <div class="mt-auto pt-6 border-t border-white/10 hidden md:block">
+      <a href="{{ url_for('logout') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-white/5 transition-all text-xs">
         <span class="material-symbols-outlined">logout</span>
-       <span class="font-label-caps text-label-caps">Log out ({{ current_user.email }})</span>
+        <span class="font-label-caps text-label-caps truncate">Log out ({{ current_user.email if current_user and current_user.email else 'User' }})</span>
       </a>
     </div>
   </aside>
-  <main class="ml-64 flex-1 bg-cloud p-8 min-h-screen">
+
+  <!-- Main Content -->
+  <main id="main-content" class="md:ml-64 flex-1 bg-cloud p-4 sm:p-6 md:p-8 min-h-screen flex flex-col">
     {% with messages = get_flashed_messages() %}
-      {% if messages %}<div class="mb-6 text-alert-red font-body-sm">{% for m in messages %}{{ m }}{% endfor %}</div>{% endif %}
+      {% if messages %}
+      <div class="mb-6 text-alert-red bg-red-50 border border-red-200 rounded-lg p-4 font-body-sm space-y-1" role="alert">
+        {% for m in messages %}<div>{{ m }}</div>{% endfor %}
+      </div>
+      {% endif %}
     {% endwith %}
-    {% block content %}{% endblock %}
-    <footer class="w-full py-12 flex flex-col md:flex-row justify-between items-center mt-12 opacity-70">
+
+    <div class="flex-1">
+      {% block content %}{% endblock %}
+    </div>
+
+    <footer class="w-full py-8 flex flex-col md:flex-row justify-between items-center mt-12 border-t border-gray-200 opacity-70 text-xs gap-2">
       <p class="font-body-sm text-body-sm">© 2026 CivicShield — Academic Project, RUIS</p>
+      <div class="flex items-center gap-4">
+        <a href="{{ url_for('privacy_page') }}" class="hover:text-asphalt underline">Privacy Policy</a>
+        <a href="{{ url_for('faq_page') }}" class="hover:text-asphalt underline">FAQ</a>
+      </div>
     </footer>
   </main>
 </div>

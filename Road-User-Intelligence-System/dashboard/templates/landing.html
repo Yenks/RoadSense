@@ -4,95 +4,107 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>CivicShield | School Zone Safety Intelligence</title>
+<meta name="description" content="A computer-vision traffic monitoring system analyzing aerial drone footage of a school zone crossing in Tamale, Ghana — enforcing legal speed limits and pedestrian right-of-way."/>
+<link rel="canonical" href="{{ request.url }}"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23F4B400'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V5l-9-4z'/></svg>"/>
+
+<!-- OpenGraph Metadata -->
+<meta property="og:title" content="CivicShield | School Zone Safety Intelligence"/>
+<meta property="og:description" content="Precision safety monitoring for school zones using computer vision and aerial drone footage in Tamale, Ghana."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="{{ request.url }}"/>
+
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
 tailwind.config = { theme: { extend: {
-  colors: { "asphalt":"#21252B","cloud":"#F7F8FA","marking-yellow":"#F4B400","alert-red":"#D8453C","clear-green":"#2E8B57","outline":"#75777b" },
+  colors: { "asphalt":"#21252B","cloud":"#F7F8FA","marking-yellow":"#F4B400","alert-red":"#D8453C","clear-green":"#2E8B57","outline":"#75777b","on-surface-variant":"#45474b","secondary":"#7a5900" },
   fontFamily: { "headline-lg":["Space Grotesk","sans-serif"], "headline-md":["Space Grotesk","sans-serif"], "body-md":["IBM Plex Sans","sans-serif"], "body-sm":["IBM Plex Sans","sans-serif"] }
 }}}
 </script>
 <style>
-  body { background-color:#F7F8FA; color:#1c1b1c; -webkit-font-smoothing:antialiased; }
+  body { background-color:#F7F8FA; color:#1c1b1c; -webkit-font-smoothing:antialiased; font-family:'IBM Plex Sans',sans-serif; }
   .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400; }
   .soft-elevation { box-shadow: 0 1px 3px rgba(20,23,26,0.08); }
 </style>
 </head>
-<body class="selection:bg-marking-yellow selection:text-asphalt overflow-x-hidden">
+<body class="selection:bg-marking-yellow selection:text-asphalt overflow-x-hidden flex flex-col min-h-screen">
 
-<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 md:px-10 py-4 bg-cloud/90 backdrop-blur">
-  <span class="font-headline-md text-xl font-bold text-asphalt">CivicShield</span>
-  <div class="hidden md:flex items-center gap-8">
-    <a href="#features" class="text-sm text-on-surface-variant hover:text-asphalt">Features</a>
-    <a href="#about" class="text-sm text-on-surface-variant hover:text-asphalt">About the Project</a>
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 md:px-10 py-4 bg-cloud/90 backdrop-blur border-b border-gray-200">
+  <a href="{{ url_for('landing') }}" class="font-headline-md text-xl font-bold text-asphalt flex items-center gap-2">
+    <div class="w-8 h-8 bg-asphalt text-marking-yellow rounded-lg flex items-center justify-center">
+      <span class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1;">shield</span>
+    </div>
+    CivicShield
+  </a>
+  <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-on-surface-variant">
+    <a href="#features" class="hover:text-asphalt">Features</a>
+    <a href="#about" class="hover:text-asphalt">About</a>
+    <a href="{{ url_for('faq_page') }}" class="hover:text-asphalt">FAQ</a>
+    <a href="{{ url_for('privacy_page') }}" class="hover:text-asphalt">Privacy</a>
   </div>
-  {% if current_user.is_authenticated %}
-  <a href="{{ url_for('dashboard_home') }}" class="bg-marking-yellow text-asphalt px-6 py-2.5 rounded-lg font-bold uppercase text-xs tracking-widest">Dashboard</a>
-  {% else %}
-  <a href="{{ url_for('login') }}" class="bg-marking-yellow text-asphalt px-6 py-2.5 rounded-lg font-bold uppercase text-xs tracking-widest">Log In</a>
-  {% endif %}
+  <div class="flex items-center gap-3">
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('dashboard_home') }}" class="bg-marking-yellow text-asphalt px-6 py-2.5 rounded-lg font-bold uppercase text-xs tracking-widest hover:brightness-95 transition-all">Dashboard</a>
+    {% else %}
+    <a href="{{ url_for('login') }}" class="text-asphalt hover:bg-gray-200 px-4 py-2.5 rounded-lg font-bold uppercase text-xs tracking-widest transition-all">Log In</a>
+    <a href="{{ url_for('signup') }}" class="bg-marking-yellow text-asphalt px-6 py-2.5 rounded-lg font-bold uppercase text-xs tracking-widest hover:brightness-95 transition-all">Sign Up</a>
+    {% endif %}
+  </div>
 </nav>
 
-<header class="pt-40 pb-20 px-6 text-center max-w-3xl mx-auto">
-  <span class="inline-block text-xs font-bold uppercase tracking-widest text-secondary bg-marking-yellow/10 px-3 py-1 rounded-full mb-6">Ghana Road Traffic Regulations, L.I. 2180</span>
-  <h1 class="font-headline-lg text-4xl md:text-5xl text-asphalt mb-6 leading-tight">
-    Precision Safety for <span class="italic">School Zones</span>.
+<header class="pt-36 md:pt-44 pb-20 px-6 text-center max-w-4xl mx-auto flex-1">
+  <span class="inline-block text-xs font-bold uppercase tracking-widest text-secondary bg-marking-yellow/20 px-3 py-1 rounded-full mb-6">Ghana Road Traffic Regulations, L.I. 2180</span>
+  <h1 class="font-headline-lg text-4xl md:text-5xl lg:text-6xl font-bold text-asphalt mb-6 leading-tight tracking-tight">
+    Precision Safety for <span class="text-secondary italic">School Zones</span>.
   </h1>
-  <p class="text-lg text-on-surface-variant mb-10">
-    A computer-vision system that analyzes real drone footage of a school-zone
-    crossing in Tamale, Ghana — detecting vehicles and pedestrians, estimating
-    vehicle speed, and flagging violations of Ghana's school-zone speed limit
-    and pedestrian right-of-way law.
+  <p class="text-base md:text-lg text-on-surface-variant mb-10 max-w-2xl mx-auto leading-relaxed">
+    A computer-vision system analyzing real fixed-drone footage of a school-zone crossing in Tamale, Ghana — detecting vehicles and pedestrians, estimating vehicle speed, and flagging violations of Ghana's legal 30km/h speed limit and pedestrian right-of-way law.
   </p>
   <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
     {% if current_user.is_authenticated %}
-    <a href="{{ url_for('dashboard_home') }}" class="bg-asphalt text-white px-8 py-3.5 rounded-lg font-bold">View Dashboard</a>
+    <a href="{{ url_for('dashboard_home') }}" class="w-full sm:w-auto bg-asphalt text-white px-8 py-3.5 rounded-lg font-bold hover:bg-black transition-all">View Dashboard</a>
     {% else %}
-    <a href="{{ url_for('login') }}" class="bg-asphalt text-white px-8 py-3.5 rounded-lg font-bold">View Dashboard</a>
+    <a href="{{ url_for('signup') }}" class="w-full sm:w-auto bg-asphalt text-white px-8 py-3.5 rounded-lg font-bold hover:bg-black transition-all">Create Account</a>
+    <a href="{{ url_for('login') }}" class="w-full sm:w-auto border border-gray-300 text-asphalt px-8 py-3.5 rounded-lg font-bold hover:bg-cloud transition-all">Log In</a>
     {% endif %}
-    <a href="#features" class="border border-outline text-asphalt px-8 py-3.5 rounded-lg font-bold">See How It Works</a>
+    <a href="#features" class="w-full sm:w-auto border border-gray-300 text-asphalt px-8 py-3.5 rounded-lg font-bold hover:bg-cloud transition-all">See How It Works</a>
   </div>
 </header>
 
-<section id="features" class="py-20 px-6 bg-white">
+<section id="features" class="py-20 px-6 bg-white border-t border-gray-100">
   <div class="max-w-6xl mx-auto">
     <div class="mb-16 text-center max-w-2xl mx-auto">
-      <h2 class="font-headline-lg text-3xl text-asphalt mb-4">How the System Works</h2>
-      <p class="text-on-surface-variant">Detection, tracking, speed estimation, and violation logging, chained into one pipeline.</p>
+      <h2 class="font-headline-lg text-3xl font-bold text-asphalt mb-4">How the System Works</h2>
+      <p class="text-on-surface-variant">Detection, tracking, speed estimation, and violation logging chained into one execution pipeline.</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-cloud p-8 rounded-lg soft-elevation">
-        <div class="w-12 h-12 bg-asphalt text-white rounded-lg flex items-center justify-center mb-6">
-          <span class="material-symbols-outlined">directions_car</span>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-cloud p-8 rounded-xl soft-elevation border border-gray-100">
+        <div class="w-12 h-12 bg-asphalt text-marking-yellow rounded-lg flex items-center justify-center mb-6">
+          <span class="material-symbols-outlined text-2xl">directions_car</span>
         </div>
-        <h3 class="font-headline-md text-lg text-asphalt mb-3">Detection & Tracking</h3>
+        <h3 class="font-headline-md text-xl font-bold text-asphalt mb-3">Detection & Tracking</h3>
         <p class="text-sm text-on-surface-variant leading-relaxed">
-          A YOLOv8 model trained on aerial drone imagery detects vehicles and
-          pedestrians frame by frame; ByteTrack assigns each one a persistent
-          identity across the footage.
+          A YOLOv8 model trained on aerial drone imagery detects vehicles and pedestrians frame by frame; ByteTrack assigns persistent tracking IDs across footage.
         </p>
       </div>
-      <div class="bg-cloud p-8 rounded-lg soft-elevation">
-        <div class="w-12 h-12 bg-asphalt text-white rounded-lg flex items-center justify-center mb-6">
-          <span class="material-symbols-outlined">speed</span>
+      <div class="bg-cloud p-8 rounded-xl soft-elevation border border-gray-100">
+        <div class="w-12 h-12 bg-asphalt text-marking-yellow rounded-lg flex items-center justify-center mb-6">
+          <span class="material-symbols-outlined text-2xl">speed</span>
         </div>
-        <h3 class="font-headline-md text-lg text-asphalt mb-3">Speed Estimation</h3>
+        <h3 class="font-headline-md text-xl font-bold text-asphalt mb-3">Speed Estimation</h3>
         <p class="text-sm text-on-surface-variant leading-relaxed">
-          Vehicle motion is mapped to real-world distance using a camera
-          calibration built from measured reference distances at the actual
-          crossing, converting pixel movement into km/h.
+          Vehicle motion is transformed to metric distance using camera homography calibration built from reference ground points at the crossing, converting pixel displacement to km/h.
         </p>
       </div>
-      <div class="bg-cloud p-8 rounded-lg soft-elevation">
-        <div class="w-12 h-12 bg-asphalt text-white rounded-lg flex items-center justify-center mb-6">
-          <span class="material-symbols-outlined">assignment_late</span>
+      <div class="bg-cloud p-8 rounded-xl soft-elevation border border-gray-100">
+        <div class="w-12 h-12 bg-asphalt text-marking-yellow rounded-lg flex items-center justify-center mb-6">
+          <span class="material-symbols-outlined text-2xl">assignment_late</span>
         </div>
-        <h3 class="font-headline-md text-lg text-asphalt mb-3">Violation Evidence</h3>
+        <h3 class="font-headline-md text-xl font-bold text-asphalt mb-3">Violation Evidence</h3>
         <p class="text-sm text-on-surface-variant leading-relaxed">
-          Vehicles exceeding the legal school-zone speed limit, or failing to
-          yield to a pedestrian on the crossing, are logged with a timestamp,
-          speed reading, and image snapshot.
+          Vehicles exceeding the 30km/h school-zone limit or failing to yield to pedestrians are logged with timestamps, speed readings, and cropped image snapshots.
         </p>
       </div>
     </div>
@@ -100,26 +112,30 @@ tailwind.config = { theme: { extend: {
 </section>
 
 <section id="about" class="py-20 px-6">
-  <div class="max-w-3xl mx-auto bg-asphalt rounded-xl p-10 md:p-14 text-center text-white">
-    <h2 class="font-headline-lg text-2xl md:text-3xl mb-4">About This Project</h2>
-    <p class="text-white/80 mb-8 leading-relaxed">
-      CivicShield is a final-year Computer Science project developed at RUIS,
-      analyzing real fixed-drone footage of a school-zone pedestrian crossing
-      in Tamale, Ghana. It applies Ghana's Road Traffic Act 2004 (Act 683) and
-      Road Traffic Regulations 2012 (L.I. 2180) as the legal basis for its
-      speed-limit and pedestrian-yield violation logic.
+  <div class="max-w-4xl mx-auto bg-asphalt rounded-2xl p-10 md:p-14 text-center text-white soft-elevation">
+    <h2 class="font-headline-lg text-3xl font-bold mb-4">About This Project</h2>
+    <p class="text-white/80 mb-8 leading-relaxed max-w-2xl mx-auto">
+      CivicShield is a final-year Computer Science research project developed at RUIS, analyzing real fixed-drone footage of a school-zone pedestrian crossing in Tamale, Ghana. It applies Ghana's Road Traffic Act 2004 (Act 683) and Road Traffic Regulations 2012 (L.I. 2180) as the legal basis for speed-limit and pedestrian-yield enforcement.
     </p>
     {% if current_user.is_authenticated %}
-    <a href="{{ url_for('dashboard_home') }}" class="bg-marking-yellow text-asphalt px-8 py-3.5 rounded-lg font-bold">View Dashboard</a>
+    <a href="{{ url_for('dashboard_home') }}" class="bg-marking-yellow text-asphalt px-8 py-3.5 rounded-lg font-bold inline-block hover:brightness-95 transition-all">View Dashboard</a>
     {% else %}
-    <a href="{{ url_for('login') }}" class="bg-marking-yellow text-asphalt px-8 py-3.5 rounded-lg font-bold">Log In to View Results</a>
+    <a href="{{ url_for('signup') }}" class="bg-marking-yellow text-asphalt px-8 py-3.5 rounded-lg font-bold inline-block hover:brightness-95 transition-all">Get Started — Sign Up</a>
     {% endif %}
   </div>
 </section>
 
-<footer class="w-full py-10 px-6 flex flex-col md:flex-row justify-between items-center bg-cloud border-t border-gray-200">
-  <span class="font-bold text-asphalt mb-4 md:mb-0">CivicShield</span>
-  <p class="text-sm text-on-surface-variant">© 2026 Final-Year Project, RUIS — Tamale, Ghana</p>
+<footer class="w-full py-10 px-6 flex flex-col md:flex-row justify-between items-center bg-cloud border-t border-gray-200 text-sm gap-4">
+  <div>
+    <span class="font-bold text-asphalt block mb-1">CivicShield</span>
+    <p class="text-xs text-on-surface-variant">Final-Year Computer Science Project, RUIS — Tamale, Ghana</p>
+  </div>
+  <div class="flex items-center gap-6 text-xs font-semibold text-on-surface-variant">
+    <a href="{{ url_for('faq_page') }}" class="hover:text-asphalt">FAQ</a>
+    <a href="{{ url_for('privacy_page') }}" class="hover:text-asphalt">Privacy Policy</a>
+    <a href="{{ url_for('login') }}" class="hover:text-asphalt">Log In</a>
+    <a href="{{ url_for('signup') }}" class="hover:text-asphalt">Sign Up</a>
+  </div>
 </footer>
 </body>
 </html>

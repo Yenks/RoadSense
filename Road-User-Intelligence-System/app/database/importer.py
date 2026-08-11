@@ -20,7 +20,7 @@ from app.database.db import get_session, init_db
 from app.database.models import Vehicle, Violation, SessionSummary
 
 
-def import_video(video_base_name: str):
+def import_video(video_base_name: str, user_id: str = None):
     init_db()
     session = get_session()
 
@@ -42,10 +42,19 @@ def import_video(video_base_name: str):
         if d["track_class"] == "vehicle" and d.get("track_id", -1) >= 0:
             by_track[d["track_id"]].append(d)
 
-    # Clear any existing rows for this video (re-import is idempotent, not additive)
-    session.query(Vehicle).filter(Vehicle.video_name == video_base_name).delete()
-    session.query(Violation).filter(Violation.video_name == video_base_name).delete()
-    session.query(SessionSummary).filter(SessionSummary.video_name == video_base_name).delete()
+    # Clear any existing rows for this video and user (re-import is idempotent)
+    v_query = session.query(Vehicle).filter(Vehicle.video_name == video_base_name)
+    vio_query = session.query(Violation).filter(Violation.video_name == video_base_name)
+    s_query = session.query(SessionSummary).filter(SessionSummary.video_name == video_base_name)
+
+    if user_id:
+        v_query = v_query.filter(Vehicle.user_id == user_id)
+        vio_query = vio_query.filter(Violation.user_id == user_id)
+        s_query = s_query.filter(SessionSummary.user_id == user_id)
+
+    v_query.delete(synchronize_session=False)
+    vio_query.delete(synchronize_session=False)
+    s_query.delete(synchronize_session=False)
 
     vehicle_avg_speeds = []
     vehicle_peak_speeds = []
@@ -73,6 +82,7 @@ def import_video(video_base_name: str):
             vehicle_avg_speeds.append(avg_speed)
 
         session.add(Vehicle(
+            user_id=user_id,
             video_name=video_base_name,
             track_id=track_id,
             vehicle_class=records[0]["label"],
@@ -91,6 +101,7 @@ def import_video(video_base_name: str):
 
         for v in violations:
             session.add(Violation(
+                user_id=user_id,
                 video_name=video_base_name,
                 track_id=v["track_id"],
                 vehicle_class=v["label"],
@@ -105,6 +116,7 @@ def import_video(video_base_name: str):
     # --- Session summary ---
     duration_sec = max((d["timestamp_sec"] for d in detections), default=0.0)
     session.add(SessionSummary(
+        user_id=user_id,
         video_name=video_base_name,
         duration_sec=duration_sec,
         total_vehicles=len(by_track) - skipped_fragments,

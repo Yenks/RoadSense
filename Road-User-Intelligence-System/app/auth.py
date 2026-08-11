@@ -23,9 +23,10 @@ class SupabaseUser(UserMixin):
     this in the session cookie and passes it back to the user_loader on
     every request to re-verify."""
 
-    def __init__(self, access_token: str, email: str):
+    def __init__(self, access_token: str, email: str, user_id: str):
         self.access_token = access_token
         self.email = email
+        self.user_id = user_id
 
     def get_id(self):
         return self.access_token
@@ -40,6 +41,7 @@ def authenticate(email: str, password: str) -> SupabaseUser:
     return SupabaseUser(
         access_token=result.session.access_token,
         email=result.user.email,
+        user_id=result.user.id,
     )
 
 
@@ -49,7 +51,20 @@ def load_user_from_token(access_token: str):
     try:
         response = supabase_client.auth.get_user(access_token)
         if response and response.user:
-            return SupabaseUser(access_token=access_token, email=response.user.email)
+            return SupabaseUser(
+                access_token=access_token,
+                email=response.user.email,
+                user_id=response.user.id,
+            )
     except Exception:
         pass
     return None
+
+
+def sign_up_user(email: str, password: str):
+    """Delegates user registration to Supabase Auth.
+    Returns the Supabase response object, or raises an exception on failure."""
+    return supabase_client.auth.sign_up({
+        "email": email,
+        "password": password,
+    })

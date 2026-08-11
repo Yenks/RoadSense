@@ -19,13 +19,14 @@ class ProcessingWorker(QThread):
     completed = pyqtSignal(dict)
     failed = pyqtSignal(str)
 
-    def __init__(self, video_path: str, sensitivity_frames: int, retain_logs: bool = True, parent=None):
+    def __init__(self, video_path: str, sensitivity_frames: int, retain_logs: bool = True, owner_user_id: str | None = None, parent=None):
         super().__init__(parent)
         self.video_path = video_path
         self.sensitivity_frames = sensitivity_frames
         # retain_logs is accepted for UI compatibility but currently unused:
         # JSON/CSV logs are always written (required by import_video / debugging).
         self.retain_logs = retain_logs
+        self.owner_user_id = owner_user_id
         self._cancel = False
         self._started_at = 0.0
 
@@ -83,11 +84,14 @@ class ProcessingWorker(QThread):
                 self.completed.emit(result)
                 return
 
-            import_video(result["video_name"])
+            import_video(result["video_name"], user_id=self.owner_user_id)
             init_db()
             session = get_session()
             try:
-                summary = session.query(SessionSummary).filter(SessionSummary.video_name == result["video_name"]).one_or_none()
+                summary = session.query(SessionSummary).filter(
+                    SessionSummary.video_name == result["video_name"],
+                    SessionSummary.user_id == self.owner_user_id
+                ).one_or_none()
                 if summary is not None:
                     result["vehicles"] = summary.total_vehicles
                     result["violations"] = summary.total_violations
@@ -95,9 +99,10 @@ class ProcessingWorker(QThread):
             finally:
                 session.close()
 
-            sync = SyncManager()
-            sync.mark_pending(result["video_name"])
-            result["synced"] = sync.sync_video(result["video_name"])
+            sync = SyncManager(user_id=self.owner_user_id)
+            sync.mark_pending(result["video_name"], user_id=self.owner_user_id)
+            result["synced"] = sync.sync_video(result["video_name"], user_id=self.owner_user_id)
+            self.completed.emit(result)
             self.completed.emit(result)
         except Exception as exc:
             self.failed.emit(str(exc))

@@ -1,17 +1,13 @@
 from __future__ import annotations
-
 import os
 import sys
 from pathlib import Path
-
 APP_DIR = Path(__file__).resolve().parents[1]
 RUIS_DIR = APP_DIR.parent
-PIPELINE_DIR = RUIS_DIR / "school-zone-safety-system"
+PIPELINE_DIR = RUIS_DIR / "Road-User-Intelligence-System"
 ENV_PATH = APP_DIR / ".env"
-
-
 def add_pipeline_to_path() -> Path:
-    bundled = app_root() / "school-zone-safety-system"
+    bundled = app_root() / "Road-User-Intelligence-System"
     pipeline = bundled if bundled.exists() else PIPELINE_DIR.resolve()
     if not pipeline.exists():
         raise FileNotFoundError(f"Existing pipeline project not found: {pipeline}")
@@ -19,38 +15,28 @@ def add_pipeline_to_path() -> Path:
     if pipeline_str not in sys.path:
         sys.path.insert(0, pipeline_str)
     return pipeline
-
-
 def app_root() -> Path:
     if getattr(sys, "frozen", False):
         return Path(sys.executable).resolve().parent
     return APP_DIR
-
-
 def pipeline_data_dir() -> Path:
-    bundled = app_root() / "school-zone-safety-system" / "data"
+    bundled = app_root() / "Road-User-Intelligence-System" / "data"
     if bundled.exists():
         return bundled
     return PIPELINE_DIR / "data"
-
-
 def load_pipeline_config():
     add_pipeline_to_path()
     from app import config
     return config
-
-
 def calibration_path_for(video_path: str) -> Path:
     config = load_pipeline_config()
     base = Path(video_path).stem
     return Path(config.CALIBRATION_DIR) / f"{base}_calibration.json"
-
-
 def ensure_packaged_runtime_paths() -> None:
     add_pipeline_to_path()
     from app import config
     root = app_root()
-    packaged_project = root / "school-zone-safety-system"
+    packaged_project = root / "Road-User-Intelligence-System"
     if not packaged_project.exists():
         return
     base = packaged_project

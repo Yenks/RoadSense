@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Log In — CivicShield</title>
-<meta name="description" content="Log in to CivicShield School Zone Safety Intelligence System dashboard to access vehicle tracking and safety event evidence."/>
+<title>Create an Account — CivicShield</title>
+<meta name="description" content="Register for CivicShield School Zone Safety Intelligence System to access traffic safety analysis."/>
 <link rel="canonical" href="{{ request.url }}"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
@@ -39,6 +39,22 @@ tailwind.config = { theme: { extend: {
       <p class="text-sm text-outline mt-1">School Zone Safety Intelligence System</p>
     </div>
 
+    {% if success %}
+    <div class="text-center py-4">
+      <div class="w-12 h-12 bg-clear-green/10 text-clear-green rounded-full flex items-center justify-center mx-auto mb-4">
+        <span class="material-symbols-outlined text-3xl">mark_email_read</span>
+      </div>
+      <h2 class="font-headline-md text-xl text-asphalt mb-2">Check Your Email</h2>
+      <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">
+        We sent a confirmation link to <strong class="text-asphalt font-semibold">{{ email }}</strong>. Please check your inbox and click the confirmation link before logging in.
+      </p>
+      <a href="{{ url_for('login') }}" class="w-full bg-marking-yellow text-asphalt py-3.5 rounded-lg font-bold hover:brightness-95 transition-all inline-flex items-center justify-center gap-2">
+        Go to Log In
+        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+      </a>
+    </div>
+    {% else %}
+
     {% with messages = get_flashed_messages() %}
       {% if messages %}
       <div class="mb-6 text-sm text-alert-red bg-red-50 border border-red-200 rounded-lg p-3.5 space-y-1" role="alert">
@@ -47,34 +63,46 @@ tailwind.config = { theme: { extend: {
       {% endif %}
     {% endwith %}
 
-    <form method="POST" id="login-form" class="space-y-6">
-      <div class="space-y-2">
+    <form method="POST" id="signup-form" class="space-y-5">
+      <div class="space-y-1.5">
         <label class="block text-[12px] font-semibold uppercase tracking-wide text-on-surface-variant" for="email">Email Address</label>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">mail</span>
           <input class="w-full pl-10 pr-4 py-3 bg-cloud border border-gray-200 rounded-lg focus:ring-2 focus:ring-asphalt focus:border-asphalt transition-all text-asphalt text-sm" 
-                 id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com" required autofocus/>
+                 id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com" value="{{ email or '' }}" required autofocus/>
         </div>
       </div>
-      <div class="space-y-2">
-        <div class="flex justify-between items-center">
-          <label class="block text-[12px] font-semibold uppercase tracking-wide text-on-surface-variant" for="password">Password</label>
-        </div>
+
+      <div class="space-y-1.5">
+        <label class="block text-[12px] font-semibold uppercase tracking-wide text-on-surface-variant" for="password">Password</label>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">lock</span>
           <input class="w-full pl-10 pr-4 py-3 bg-cloud border border-gray-200 rounded-lg focus:ring-2 focus:ring-asphalt focus:border-asphalt transition-all text-asphalt text-sm" 
-                 id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required/>
+                 id="password" name="password" type="password" autocomplete="new-password" minlength="6" placeholder="At least 6 characters" required/>
         </div>
       </div>
-      <button id="submit-btn" class="w-full bg-marking-yellow text-asphalt py-3.5 rounded-lg font-bold hover:brightness-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-8 cursor-pointer" type="submit">
-        <span id="btn-text">Log In</span>
-        <span id="btn-icon" class="material-symbols-outlined">arrow_forward</span>
+
+      <div class="space-y-1.5">
+        <label class="block text-[12px] font-semibold uppercase tracking-wide text-on-surface-variant" for="confirm_password">Confirm Password</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">lock_reset</span>
+          <input class="w-full pl-10 pr-4 py-3 bg-cloud border border-gray-200 rounded-lg focus:ring-2 focus:ring-asphalt focus:border-asphalt transition-all text-asphalt text-sm" 
+                 id="confirm_password" name="confirm_password" type="password" autocomplete="new-password" minlength="6" placeholder="Re-enter password" required/>
+        </div>
+      </div>
+
+      <button id="submit-btn" class="w-full bg-marking-yellow text-asphalt py-3.5 rounded-lg font-bold hover:brightness-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-6 cursor-pointer" type="submit">
+        <span id="btn-text">Create Account</span>
+        <span id="btn-icon" class="material-symbols-outlined">person_add</span>
       </button>
     </form>
+    {% endif %}
 
-    <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm">
-      <a href="{{ url_for('signup') }}" class="font-semibold text-asphalt hover:underline">New here? Create an account</a>
-      <a href="{{ url_for('landing') }}" class="text-outline hover:text-asphalt underline">Back to Overview</a>
+    <div class="mt-8 pt-6 border-t border-gray-100 flex justify-between items-center text-sm">
+      <span class="text-outline">Already registered?</span>
+      <a href="{{ url_for('login') }}" class="font-semibold text-asphalt hover:underline flex items-center gap-1">
+        Log In <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+      </a>
     </div>
   </div>
 
@@ -84,15 +112,15 @@ tailwind.config = { theme: { extend: {
 </main>
 
 <script>
-  const form = document.getElementById('login-form');
+  const form = document.getElementById('signup-form');
   if (form) {
-    form.addEventListener('submit', function() {
+    form.addEventListener('submit', function(e) {
       const btn = document.getElementById('submit-btn');
       const text = document.getElementById('btn-text');
       const icon = document.getElementById('btn-icon');
       btn.disabled = true;
       btn.classList.add('opacity-75', 'cursor-not-allowed');
-      text.textContent = 'Authenticating...';
+      text.textContent = 'Registering...';
       icon.textContent = 'sync';
       icon.classList.add('animate-spin');
     });

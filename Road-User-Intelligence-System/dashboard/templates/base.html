@@ -19,7 +19,7 @@
             <a href="{{ url_for('violations_page') }}" class="{{ 'active' if request.endpoint == 'violations_page' }}">Violations</a>
             <a href="{{ url_for('videos_page') }}" class="{{ 'active' if request.endpoint in ['videos_page', 'video_detail'] }}">Videos</a>
         </nav>
-        <a href="{{ url_for('logout') }}" class="logout">Log out ({{ current_user.username }})</a>
+        <a href="{{ url_for('logout') }}" class="logout">Log out ({{ current_user.email }})</a>
     </aside>
     {% endif %}
     <main>

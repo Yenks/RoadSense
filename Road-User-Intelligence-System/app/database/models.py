@@ -14,6 +14,7 @@ class Vehicle(Base):
     __tablename__ = "vehicles"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String, nullable=True, index=True)
     video_name = Column(String, nullable=False)
     track_id = Column(Integer, nullable=False)
     vehicle_class = Column(String, nullable=False)
@@ -28,6 +29,7 @@ class Violation(Base):
     __tablename__ = "violations"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String, nullable=True, index=True)
     video_name = Column(String, nullable=False)
     track_id = Column(Integer, nullable=False)
     vehicle_class = Column(String, nullable=False)
@@ -42,7 +44,8 @@ class SessionSummary(Base):
     __tablename__ = "session_summary"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    video_name = Column(String, nullable=False, unique=True)
+    user_id = Column(String, nullable=True, index=True)
+    video_name = Column(String, nullable=False)
     duration_sec = Column(Float, nullable=False)
     total_vehicles = Column(Integer, nullable=False)
     avg_speed_kmh = Column(Float, nullable=True)

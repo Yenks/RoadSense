@@ -43,7 +43,27 @@ class ViolationPipeline:
         self.crossing_monitor = CrossingMonitor(calibration_path)
         self.ground_point_mode = ground_point_mode
 
-    def run(self, input_path: str, output_video_path=None, show_preview=False):
+    def run(
+        self,
+        input_path: str,
+        output_video_path=None,
+        show_preview=False,
+        frame_callback=None,
+        progress_callback=None,
+        stop_requested=None,
+    ):
+        """
+        frame_callback(frame, stats: dict) -- called every frame with the
+            annotated frame (BGR ndarray) and a stats dict (currently
+            includes at least "frame_index"; callers should treat unknown
+            keys as forward-compatible additions).
+        progress_callback(current: int, total: int | None) -- called every
+            frame with the current frame index and total frame count
+            (None if the video's frame count is unknown).
+        stop_requested() -> bool -- polled every frame; if it returns True,
+            processing stops early and the returned result dict includes
+            "cancelled": True.
+        """
         if not os.path.exists(input_path):
             raise FileNotFoundError(f"Input video not found: {input_path}")
 
@@ -70,12 +90,17 @@ class ViolationPipeline:
         counter = VehicleCounter()
         box_smoother = BoxSmoother()
         frame_index = 0
+        cancelled = False
 
         print(f"[Violations] Processing '{input_path}' -> '{output_video_path}'")
         print(f"[Violations] Speed limit: {SPEED_LIMIT_KMH} km/h (Ghana L.I. 2180 school-zone limit)")
         progress = tqdm(total=total_frames, unit="frame", desc="Detecting violations", dynamic_ncols=True)
 
         while True:
+            if stop_requested is not None and stop_requested():
+                cancelled = True
+                break
+
             ret, frame = cap.read()
             if not ret:
                 break
@@ -168,6 +193,18 @@ class ViolationPipeline:
                 if cv2.waitKey(1) & 0xFF == ord("q"):
                     break
 
+            if frame_callback is not None:
+                stats = {
+                    "frame_index": frame_index,
+                    "timestamp_sec": round(timestamp_sec, 3),
+                    "vehicles": counter.total_count,
+                    "violations": len(violation_detector.violations),
+                }
+                frame_callback(frame, stats)
+
+            if progress_callback is not None:
+                progress_callback(frame_index, total_frames)
+
             frame_index += 1
             progress.update(1)
 
@@ -184,6 +221,8 @@ class ViolationPipeline:
         print(f"[Violations] Violations log: {json_path}")
         print(f"[Violations] Snapshots dir: {violation_snapshot_dir}")
         print(f"[Violations] Summary: {violation_detector.summary()}")
+        if cancelled:
+            print(f"[Violations] Processing cancelled by request at frame {frame_index}")
 
         return {
             "annotated_video": output_video_path,
@@ -191,6 +230,7 @@ class ViolationPipeline:
             "csv_log": csv_path,
             "snapshots_dir": violation_snapshot_dir,
             "summary": violation_detector.summary(),
+            "cancelled": cancelled,
         }
 
 

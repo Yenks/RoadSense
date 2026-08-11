@@ -1,0 +1,22 @@
+[
+  {
+    "track_id": 2,
+    "label": "motor",
+    "frame_index": 4,
+    "timestamp_sec": 0.167,
+    "peak_speed_kmh": 9.3,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\RoadSense\\Road-User-Intelligence-System\\data\\violations\\DJI_0523_720p\\violation_track2_motor_9kmh.jpg",
+    "violation_type": "failure_to_yield"
+  },
+  {
+    "track_id": 3,
+    "label": "motor",
+    "frame_index": 49,
+    "timestamp_sec": 2.044,
+    "peak_speed_kmh": 9.2,
+    "speed_limit_kmh": 8.0,
+    "snapshot_path": "C:\\Users\\Yenka\\Desktop\\Prime Time\\RoadSense\\Road-User-Intelligence-System\\data\\violations\\DJI_0523_720p\\violation_track3_motor_9kmh.jpg",
+    "violation_type": "failure_to_yield"
+  }
+]

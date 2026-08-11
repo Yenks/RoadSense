@@ -105,7 +105,7 @@ DATABASE_PATH = os.path.join(BASE_DIR, "safety_events.db")
 # --- Dashboard / Flask (used starting Week 8-9) ---
 FLASK_HOST = "0.0.0.0"
 FLASK_PORT = 5000
-DEBUG = True
+DEBUG = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
 
 # --- Enhanced calibration (Week 5, v2) ---
 CALIBRATION_MIN_POINTS = 8  # was 4 — spread across near/far/left/right of frame

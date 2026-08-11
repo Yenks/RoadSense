@@ -6,7 +6,7 @@
 
 # --- Week 3: Object Detection (YOLOv8) ---
 ultralytics>=8.2.0          # YOLOv8 models + inference
-opencv-python-headless>=4.9.0
+opencv-python>=4.9.0
 numpy>=1.26.0
 Pillow>=10.2.0
 
@@ -30,6 +30,7 @@ Flask-SQLAlchemy>=3.1.0
 SQLAlchemy>=2.0.0
 psycopg2-binary>=2.9.0
 python-dotenv>=1.0.0
+supabase
 
 # --- Week 9: Dashboard Frontend ---
 # Chart.js is loaded via CDN in dashboard/templates/index.html - no pip package needed

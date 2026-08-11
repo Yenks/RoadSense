@@ -19,13 +19,13 @@ class AuthManager:
     """Shared login gate — session is held for the app runtime only.
 
     Uses a Supabase client initialized with SUPABASE_ANON_KEY only.
-    Sync writes (Task 5) use a separate service_role client in SyncManager.
     """
 
     def __init__(self):
         self._client = None
         self.session = None
         self.user_email: str | None = None
+        self.user_id: str | None = None
 
     def _create_client(self):
         load_dotenv(ENV_PATH)
@@ -34,10 +34,7 @@ class AuthManager:
         if not url:
             raise RuntimeError("SUPABASE_URL is required in .env")
         if not key:
-            raise RuntimeError(
-                "SUPABASE_ANON_KEY is required in .env for authentication. "
-                "Do not use SUPABASE_SERVICE_KEY for login."
-            )
+            raise RuntimeError("SUPABASE_ANON_KEY is required in .env for authentication.")
         from supabase import create_client
         return create_client(url, key)
 
@@ -78,9 +75,30 @@ class AuthManager:
         self.session = session
         user = getattr(response, "user", None) or getattr(session, "user", None)
         self.user_email = getattr(user, "email", None) or email
+        self.user_id = getattr(user, "id", None)
         return response
 
+    def sign_up(self, email: str, password: str) -> Any:
+        email = (email or "").strip()
+        if not email or not password:
+            raise AuthError("Email and password are required.")
+        if len(password) < 6:
+            raise AuthError("Password must be at least 6 characters long.")
+        try:
+            response = self.connect().auth.sign_up(
+                {"email": email, "password": password}
+            )
+            return response
+        except AuthError:
+            raise
+        except Exception as exc:
+            message = str(exc).strip() or "Registration failed."
+            if "already registered" in message.lower() or "already exists" in message.lower():
+                raise AuthError("An account with this email address already exists. Please log in.") from exc
+            raise AuthError(message) from exc
+
     def sign_out(self) -> None:
+
         try:
             if self._client is not None:
                 self._client.auth.sign_out()
@@ -89,5 +107,6 @@ class AuthManager:
         finally:
             self.session = None
             self.user_email = None
+            self.user_id = None
             # Drop the client so the next login recreates an anon-key client cleanly.
             self._client = None
