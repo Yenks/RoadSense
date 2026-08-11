@@ -105,27 +105,61 @@ jobs:
         run: |
           pyinstaller --noconfirm rszsis-desktop-app/rszsis-desktop.spec
 
-      - name: Ensure empty runtime output directories exist
+      - name: Ensure empty runtime output directories exist in build dist
         run: |
           python -c "
+          import os
           from pathlib import Path
-          dist = Path('rszsis-desktop-app/dist/rszsis-desktop/Road-User-Intelligence-System/data')
+          dist = Path('dist/rszsis-desktop/Road-User-Intelligence-System/data')
+          if not dist.parent.exists():
+              print(f'CRITICAL ERROR: PyInstaller output directory {dist.parent} does not exist!')
+              sys.exit(1)
           for folder in ['raw_videos', 'processed', 'violations', 'calibration_frames']:
               (dist / folder).mkdir(parents=True, exist_ok=True)
+              print(f'Ensured subfolder: {dist / folder}')
           "
 
       - name: Archive build output
         run: |
           python -c "
-          import shutil, os
+          import shutil, os, sys
           from pathlib import Path
 
-          src = Path('rszsis-desktop-app/dist/rszsis-desktop')
+          src = Path('dist/rszsis-desktop')
+          if not src.exists():
+              print(f'CRITICAL ERROR: Build dist directory {src} does not exist!')
+              sys.exit(1)
+
           fmt = 'gztar' if '${{ matrix.platform.archive_ext }}' == 'tar.gz' else 'zip'
           out_base = '${{ matrix.platform.artifact_name }}'
           
           archive = shutil.make_archive(out_base, fmt, str(src))
           print(f'Created archive: {archive} ({os.path.getsize(archive)} bytes)')
+          "
+
+      - name: Verify archive size and file integrity
+        run: |
+          python -c "
+          import os, sys
+          from pathlib import Path
+
+          archive_name = '${{ matrix.platform.artifact_name }}.${{ matrix.platform.archive_ext }}'
+          archive_path = Path(archive_name)
+
+          if not archive_path.exists():
+              print(f'CRITICAL ERROR: Archive file {archive_name} does not exist!')
+              sys.exit(1)
+
+          size_bytes = os.path.getsize(archive_path)
+          size_mb = size_bytes / (1024 * 1024)
+          print(f'VERIFICATION: Archive {archive_name} size is {size_mb:.2f} MB ({size_bytes} bytes)')
+
+          MIN_SIZE_MB = 100.0
+          if size_mb < MIN_SIZE_MB:
+              print(f'CRITICAL ERROR: Archive size {size_mb:.2f} MB is below required minimum threshold ({MIN_SIZE_MB} MB)!')
+              sys.exit(1)
+
+          print(f'SUCCESS: Archive size verification passed ({size_mb:.2f} MB >= {MIN_SIZE_MB} MB).')
           "
 
       - name: Upload artifact
@@ -145,11 +179,14 @@ jobs:
       - name: Download all build artifacts
         uses: actions/download-artifact@v4
 
+      - name: Display downloaded files
+        run: ls -R
+
       - name: Publish Release to GitHub
         uses: softprops/action-gh-release@v2
         with:
           name: RoadSense Desktop App v1.0.0
-          body: Initial multi-platform standalone desktop application release for the Road-User Safety Intelligence System (RSZSIS).
+          body: Initial multi-platform standalone desktop application release for RoadSense — detects and logs road-safety violations from video footage.
           files: |
             RoadSense-Desktop-Windows/RoadSense-Desktop-Windows.zip
             RoadSense-Desktop-macOS/RoadSense-Desktop-macOS.zip
