@@ -41,6 +41,7 @@ tailwind.config = { theme: { extend: {
   <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-on-surface-variant">
     <a href="#features" class="hover:text-asphalt">Features</a>
     <a href="#about" class="hover:text-asphalt">About</a>
+    <a href="#desktop-app" class="hover:text-asphalt">Desktop App</a>
     <a href="{{ url_for('faq_page') }}" class="hover:text-asphalt">FAQ</a>
     <a href="{{ url_for('privacy_page') }}" class="hover:text-asphalt">Privacy</a>
   </div>
@@ -70,6 +71,10 @@ tailwind.config = { theme: { extend: {
     <a href="{{ url_for('login') }}" class="w-full sm:w-auto border border-gray-300 text-asphalt px-8 py-3.5 rounded-lg font-bold hover:bg-cloud transition-all">Log In</a>
     {% endif %}
     <a href="#features" class="w-full sm:w-auto border border-gray-300 text-asphalt px-8 py-3.5 rounded-lg font-bold hover:bg-cloud transition-all">See How It Works</a>
+    <a href="#desktop-app" class="w-full sm:w-auto bg-marking-yellow text-asphalt px-8 py-3.5 rounded-lg font-bold hover:brightness-95 transition-all flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-[20px]">download</span>
+      Download Desktop App
+    </a>
   </div>
 </header>
 
@@ -106,6 +111,75 @@ tailwind.config = { theme: { extend: {
         <p class="text-sm text-on-surface-variant leading-relaxed">
           Vehicles exceeding the 30km/h school-zone limit or failing to yield to pedestrians are logged with timestamps, speed readings, and cropped image snapshots.
         </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="desktop-app" class="py-20 px-6 bg-asphalt text-white border-t border-gray-800">
+  <div class="max-w-5xl mx-auto text-center">
+    <span class="inline-block text-xs font-bold uppercase tracking-widest text-marking-yellow bg-marking-yellow/10 px-3 py-1 rounded-full mb-4">Standalone Desktop Client</span>
+    <h2 class="font-headline-lg text-3xl md:text-4xl font-bold mb-4">Download RoadSense Desktop App</h2>
+    <p class="text-white/70 max-w-2xl mx-auto mb-10 text-sm md:text-base leading-relaxed">
+      Process video footage locally on your workstation with real-time YOLOv8 object detection, ByteTrack tracking, speed estimation, and automated cloud sync to Supabase.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+      <!-- Windows -->
+      <div class="bg-white/5 border border-white/10 p-6 rounded-xl flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="material-symbols-outlined text-3xl text-marking-yellow">desktop_windows</span>
+            <div>
+              <h3 class="font-bold text-lg">Windows</h3>
+              <p class="text-xs text-white/50">64-bit (.zip bundle)</p>
+            </div>
+          </div>
+          <p class="text-xs text-white/70 mb-6">Standalone executable for Windows 10/11 with bundled PyQt6 & pipeline runtime.</p>
+        </div>
+        <a href="https://github.com/Yenks/RoadSense/releases/latest/download/RoadSense-Desktop-Windows.zip" 
+           class="w-full bg-marking-yellow text-asphalt font-bold py-2.5 px-4 rounded-lg text-center text-sm hover:brightness-95 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">download</span>
+          Download for Windows
+        </a>
+      </div>
+
+      <!-- macOS -->
+      <div class="bg-white/5 border border-white/10 p-6 rounded-xl flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="material-symbols-outlined text-3xl text-marking-yellow">laptop_mac</span>
+            <div>
+              <h3 class="font-bold text-lg">macOS</h3>
+              <p class="text-xs text-white/50">Apple Silicon / Intel (.zip bundle)</p>
+            </div>
+          </div>
+          <p class="text-xs text-white/70 mb-6">Native macOS application package bundled with PyTorch CPU inference.</p>
+        </div>
+        <a href="https://github.com/Yenks/RoadSense/releases/latest/download/RoadSense-Desktop-macOS.zip" 
+           class="w-full bg-white/10 border border-white/20 text-white font-bold py-2.5 px-4 rounded-lg text-center text-sm hover:bg-white/20 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">download</span>
+          Download for macOS
+        </a>
+      </div>
+
+      <!-- Linux -->
+      <div class="bg-white/5 border border-white/10 p-6 rounded-xl flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="material-symbols-outlined text-3xl text-marking-yellow">terminal</span>
+            <div>
+              <h3 class="font-bold text-lg">Linux</h3>
+              <p class="text-xs text-white/50">x86_64 (.tar.gz bundle)</p>
+            </div>
+          </div>
+          <p class="text-xs text-white/70 mb-6">Precompiled binary package compatible with Ubuntu 22.04 / 24.04 and Debian.</p>
+        </div>
+        <a href="https://github.com/Yenks/RoadSense/releases/latest/download/RoadSense-Desktop-Linux.tar.gz" 
+           class="w-full bg-white/10 border border-white/20 text-white font-bold py-2.5 px-4 rounded-lg text-center text-sm hover:bg-white/20 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">download</span>
+          Download for Linux
+        </a>
       </div>
     </div>
   </div>
