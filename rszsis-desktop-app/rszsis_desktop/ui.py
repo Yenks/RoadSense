@@ -981,6 +981,7 @@ class MainWindow(QMainWindow):
 
 
 def run_app():
+    ensure_packaged_runtime_paths()
     app = QApplication([])
     app.setStyleSheet(STYLE)
     auth = AuthManager()
